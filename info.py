@@ -1,5 +1,4 @@
 
-
 def greet_user(message):
     welcome_message = (
         f'<b>Салам, {message.from_user.first_name}!</b> 😊\n\n'

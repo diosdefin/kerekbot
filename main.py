@@ -40,7 +40,7 @@ def callback_message(callback):
         bot_messages[callback.message.chat.id].append(sent_message.message_id)
 
     elif callback.data == 'trial_lesson':
-        file = open('img/tutorial.jpg', 'rb')
+        file = open('img/tutorial.png', 'rb')
         sent_message = bot.send_photo(callback.message.chat.id, file, "Таанышуу сабагын танданыз:", reply_markup=get_trial_lesson_markup())
         # Сохранение ID отправленного сообщения
         bot_messages[callback.message.chat.id].append(sent_message.message_id)

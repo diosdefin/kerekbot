@@ -3,7 +3,7 @@ from telebot import types
 def get_main_markup():
     markup = types.InlineKeyboardMarkup(row_width=1)
     btn1 = types.InlineKeyboardButton('📚 Пробный сабак', callback_data='trial_lesson')
-    btn3 = types.InlineKeyboardButton('🎓 Бугун сатып ал (1999сом)', callback_data='buy_course')
+    btn3 = types.InlineKeyboardButton('🎓 Бүгүн сатып ал (акция)', callback_data='buy_course')
     markup.add(btn1, btn3)
     return markup
 
@@ -19,7 +19,7 @@ def get_trial_lesson_markup():
 
 def get_bay(flag):
     markup = types.InlineKeyboardMarkup(row_width=1)
-    btn_bay = types.InlineKeyboardButton(f'{flag} Бугун сатып ал', callback_data='buy_course')
+    btn_bay = types.InlineKeyboardButton(f'{flag} Бүгүн сатып ал (акция)', callback_data='buy_course')
     btn4 = types.InlineKeyboardButton('🔙 Башкы меню', callback_data='main_str')
     markup.add(btn_bay, btn4)
     return markup
