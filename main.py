@@ -8,15 +8,30 @@ bot = telebot.TeleBot(TOKEN)
 # Словарь для хранения сообщений, отправленных ботом
 bot_messages = {}
 
+# Функция для отправки сообщений в твой чат с информацией о пользователе
+def send_message_to_me(text):
+    my_chat_id = "1616464024"  # Замените на ID вашего чата или канала
+    bot.send_message(chat_id=my_chat_id, text=text)
+
 @bot.message_handler(commands=['start'])
 def start(message):
+    user = message.from_user
+    user_id = user.id
+    first_name = user.first_name
+    last_name = user.last_name if user.last_name else "N/A"
+    username = user.username if user.username else "N/A"
+    
+    # Сохранение данных пользователя или выполнение действий
+    user_info = f"User ID: {user_id}\nИмя: {first_name}\nФамилия: {last_name}\nИмя пользователя: {username}"
+    send_message_to_me(user_info)
+    
     file = open('img/logo.jpg', 'rb')
     sent_message = bot.send_photo(message.chat.id, file, caption=greet_user(message), parse_mode='html', reply_markup=get_main_markup())
+    
     # Сохранение ID отправленного сообщения
     if message.chat.id not in bot_messages:
         bot_messages[message.chat.id] = []
     bot_messages[message.chat.id].append(sent_message.message_id)
-
 
 @bot.callback_query_handler(func=lambda callback: True)
 def callback_message(callback):
