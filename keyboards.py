@@ -1,10 +1,14 @@
 from telebot import types
 
 def get_main_markup():
-    markup = types.InlineKeyboardMarkup(row_width=1)
+    markup = types.InlineKeyboardMarkup(row_width=2)
     btn1 = types.InlineKeyboardButton('📚 Пробный сабак', callback_data='trial_lesson')
+    btn2 = types.InlineKeyboardButton(
+        f'📞Суроолор боюнча', 
+          url='https://wa.me/996552953495?text=Саламатсызбы,%20🇰🇷Корей%20тили%20боюнча(видео курс)%20кенениреек%20мааалымат%20берип%20коюнузчу.%20'
+    )
     btn3 = types.InlineKeyboardButton('🎓 Бүгүн сатып ал (акция)', callback_data='buy_course')
-    markup.add(btn1, btn3)
+    markup.add(btn1,btn2,btn3)
     return markup
 
 def get_trial_lesson_markup():
