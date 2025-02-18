@@ -75,7 +75,7 @@ def callback_message(callback):
         # Сохранение ID отправленного сообщения
         bot_messages[callback.message.chat.id].append(sent_message.message_id)
 
-# Этот блок добавляет обработку исключений для метода polling
+#Этот блок добавляет обработку исключений для метода polling
 while True:
     try:
         bot.polling(none_stop=True, interval=0, timeout=30, long_polling_timeout=30)
