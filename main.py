@@ -1,18 +1,53 @@
+# Импорт необходимых модулей
 import telebot
 from keyboards import *
 from config import *
 from info import *
 import time
+import os
 
+# Инициализация бота с токеном
 bot = telebot.TeleBot(TOKEN)
 
 # Словарь для хранения сообщений, отправленных ботом
 bot_messages = {}
 
+# Список для хранения ID всех пользователей
+user_ids = set()
+
 # Функция для отправки сообщений в твой чат с информацией о пользователе
 def send_message_to_me(text):
     my_chat_id = "1616464024"  # Замените на ID вашего чата или канала
     bot.send_message(chat_id=my_chat_id, text=text)
+
+# Функция для чтения счетчика из файла
+def read_counter():
+    if not os.path.exists('counter.txt'):
+        return 0
+    with open('counter.txt', 'r') as file:
+        return int(file.read().strip())
+
+# Функция для записи счетчика в файл
+def write_counter(value):
+    with open('counter.txt', 'w') as file:
+        file.write(str(value))
+
+# Функция для чтения ID пользователей из файла
+def read_user_ids():
+    if not os.path.exists('user_ids.txt'):
+        return set()
+    with open('user_ids.txt', 'r') as file:
+        user_ids = set(int(line.strip()) for line in file)
+    return user_ids
+
+# Функция для записи ID пользователей в файл
+def write_user_ids(user_ids):
+    with open('user_ids.txt', 'w') as file:
+        for user_id in user_ids:
+            file.write(f"{user_id}\n")
+
+# Инициализация списка пользователей
+user_ids = read_user_ids()
 
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -21,9 +56,17 @@ def start(message):
     first_name = user.first_name
     last_name = user.last_name if user.last_name else "N/A"
     username = user.username if user.username else "N/A"
+
+    # Сохранение ID пользователя
+    user_ids.add(user_id)
+    write_user_ids(user_ids)
+
+    # Увеличиваем счетчик и сохраняем его
+    counter = read_counter() + 1
+    write_counter(counter)
     
     # Сохранение данных пользователя или выполнение действий
-    user_info = f"User ID: {user_id}\nИмя: {first_name}\nФамилия: {last_name}\nИмя пользователя: {username}"
+    user_info = f"{counter}. User ID: {user_id}\nИмя: {first_name}\nФамилия: {last_name}\nИмя пользователя: {username}"
     send_message_to_me(user_info)
     
     file = open('img/logo.jpg', 'rb')
@@ -33,6 +76,30 @@ def start(message):
     if message.chat.id not in bot_messages:
         bot_messages[message.chat.id] = []
     bot_messages[message.chat.id].append(sent_message.message_id)
+
+# Команда для отправки сообщения всем пользователям
+@bot.message_handler(commands=['secret'])
+def secret(message):
+    if message.from_user.id == 6464024:  # Замените на ваш Telegram ID, чтобы ограничить доступ к команде
+        text = message.text[len('/secret '):]
+        for user_id in user_ids:
+            bot.send_message(chat_id=user_id, text=text)
+    else:
+        bot.reply_to(message, "У вас нет доступа к этой команде.")
+
+# Команда для отправки сообщения конкретному пользователю
+@bot.message_handler(commands=['direct'])
+def direct(message):
+    if message.from_user.id == 1616464024:  # Замените на ваш Telegram ID, чтобы ограничить доступ к команде
+        try:
+            parts = message.text.split(' ', 2)
+            user_id = int(parts[1])
+            text = parts[2]
+            bot.send_message(chat_id=user_id, text=text)
+        except (IndexError, ValueError):
+            bot.reply_to(message, "Неверный формат команды. Используйте /direct <user_id> <сообщение>.")
+    else:
+        bot.reply_to(message, "У вас нет доступа к этой команде.")
 
 @bot.callback_query_handler(func=lambda callback: True)
 def callback_message(callback):
