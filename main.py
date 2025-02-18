@@ -2,6 +2,7 @@ import telebot
 from keyboards import *
 from config import *
 from info import *
+import time
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -74,5 +75,10 @@ def callback_message(callback):
         # Сохранение ID отправленного сообщения
         bot_messages[callback.message.chat.id].append(sent_message.message_id)
 
-if __name__ == '__main__':
-    bot.polling(none_stop=True, interval=0, timeout=30, long_polling_timeout=30)
+# Этот блок добавляет обработку исключений для метода polling
+while True:
+    try:
+        bot.polling(none_stop=True, interval=0, timeout=30, long_polling_timeout=30)
+    except Exception as e:
+        print(f"Ошибка: {e}")
+        time.sleep(15)  # Задержка перед повторной попыткой

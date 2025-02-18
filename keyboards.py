@@ -35,11 +35,11 @@ def get_main_markup_btn():
         url='https://wa.me/996552953495?text=Саламатсызбы,%20мен%20СТАНДАРТ%20тарифи%20боюнча(🇰🇷корей тили)'
     )
     btn3 = types.InlineKeyboardButton(
-        f'🇰🇷 Вип\n💰 2500c акция', 
+        f'🇰🇷 Премиум\n💰 2500c акция', 
           url='https://wa.me/996552953495?text=Саламатсызбы,%20мен%20ВИП%20тарифи%20боюнча(🇰🇷корей тили)'
     )
     btn4 = types.InlineKeyboardButton(
-        f'🇰🇷 Премиум\n💰 5000c', 
+        f'🇰🇷 Вип\n💰 5000c', 
          url='https://wa.me/996552953495?text=Саламатсызбы,%20мен%20ПРЕМИУМ%20тарифи%20боюнча(🇰🇷корей тили)'
     )
     btn_main = types.InlineKeyboardButton('🔙 Башкы меню', callback_data='main_str')
