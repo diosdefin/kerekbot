@@ -1,4 +1,3 @@
-# Импорт необходимых модулей
 import telebot
 from keyboards import *
 from config import *
@@ -6,7 +5,6 @@ from info import *
 import time
 import os
 
-# Инициализация бота с токеном
 bot = telebot.TeleBot(TOKEN)
 
 # Словарь для хранения сообщений, отправленных ботом
@@ -46,7 +44,6 @@ def write_user_ids(user_ids):
         for user_id in user_ids:
             file.write(f"{user_id}\n")
 
-# Инициализация списка пользователей
 user_ids = read_user_ids()
 
 @bot.message_handler(commands=['start'])
@@ -100,6 +97,19 @@ def direct(message):
             bot.reply_to(message, "Неверный формат команды. Используйте /direct <user_id> <сообщение>.")
     else:
         bot.reply_to(message, "У вас нет доступа к этой команде.")
+
+# Обработчик для текстовых сообщений от пользователей
+@bot.message_handler(func=lambda message: True)
+def handle_message(message):
+    user = message.from_user
+    user_id = user.id
+    first_name = user.first_name
+    last_name = user.last_name if user.last_name else "N/A"
+    text = message.text
+    
+    # Отправка информации о сообщении вам
+    user_info = f"User ID: {user_id}\nИмя: {first_name}\nФамилия: {last_name}\nСообщение: {text}"
+    send_message_to_me(user_info)
 
 @bot.callback_query_handler(func=lambda callback: True)
 def callback_message(callback):
