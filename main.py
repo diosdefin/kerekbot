@@ -80,7 +80,7 @@ def start(message):
 # Команда для отправки сообщения всем пользователям
 @bot.message_handler(commands=['secret'])
 def secret(message):
-    if message.from_user.id == 6464024:  # Замените на ваш Telegram ID, чтобы ограничить доступ к команде
+    if message.from_user.id == 1616464024:  # Замените на ваш Telegram ID, чтобы ограничить доступ к команде
         text = message.text[len('/secret '):]
         for user_id in user_ids:
             bot.send_message(chat_id=user_id, text=text)
