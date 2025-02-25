@@ -140,7 +140,7 @@ def callback_message(callback):
 
     elif callback.data == 'long_kor':
         file = open('img/enes.jpg', 'rb')
-        file_vid = open('img/vid_kor.mp4', 'rb')
+        file_vid = open('img/vid_kor.MOV', 'rb')
         sent_photo = bot.send_photo(callback.message.chat.id, file, caption=teacher_kor, parse_mode='html')
         sent_video = bot.send_video(callback.message.chat.id, file_vid, caption=text_tutorial('корей', '🇰🇷'), parse_mode='html', reply_markup=get_bay('🇰🇷'))
         # Сохранение ID отправленных сообщений
@@ -152,7 +152,7 @@ def callback_message(callback):
         # Сохранение ID отправленного сообщения
         bot_messages[callback.message.chat.id].append(sent_message.message_id)
 
-# Этот блок добавляет обработку исключений для метода polling
+#Этот блок добавляет обработку исключений для метода polling
 while True:
     try:
         bot.polling(none_stop=True, interval=0, timeout=30, long_polling_timeout=30)
